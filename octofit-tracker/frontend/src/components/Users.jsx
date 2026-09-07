@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getBaseApiUrl } from '../utils/api';
 
-const apiEndpoint = '/api/users/';
+const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : 'http://localhost:8000/api/users/';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ function Users() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const response = await fetch(`${getBaseApiUrl()}${apiEndpoint}`);
+        const response = await fetch(apiEndpoint);
         const data = await response.json();
         const usersList = Array.isArray(data) ? data : data.users ?? data.results ?? [];
         setUsers(usersList);

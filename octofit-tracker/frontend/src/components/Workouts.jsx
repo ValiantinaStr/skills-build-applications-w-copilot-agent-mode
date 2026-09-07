@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { getBaseApiUrl } from '../utils/api';
 
-const apiEndpoint = '/api/workouts/';
+const apiEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : 'http://localhost:8000/api/workouts/';
 
 function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -10,7 +11,7 @@ function Workouts() {
   useEffect(() => {
     const loadWorkouts = async () => {
       try {
-        const response = await fetch(`${getBaseApiUrl()}${apiEndpoint}`);
+        const response = await fetch(apiEndpoint);
         const data = await response.json();
         const workoutsList = Array.isArray(data) ? data : data.workouts ?? data.results ?? [];
         setWorkouts(workoutsList);
