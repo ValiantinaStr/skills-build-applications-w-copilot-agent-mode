@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl } from '../utils/api';
+import { getBaseApiUrl } from '../utils/api';
+
+const apiEndpoint = '/api/users/';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -8,7 +10,7 @@ function Users() {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const response = await fetch(buildApiUrl('users'));
+        const response = await fetch(`${getBaseApiUrl()}${apiEndpoint}`);
         const data = await response.json();
         const usersList = Array.isArray(data) ? data : data.users ?? data.results ?? [];
         setUsers(usersList);
